@@ -34,9 +34,12 @@ def run(with_command: str, cmd_args: List[str], executable: str) -> int:
 
 
 def main():
-    parser = argparse.ArgumentParser()
+    commands = command.discover()
+
+    epilog = "Available contexts: " + ", ".join(commands)
+    parser = argparse.ArgumentParser(prog="with", epilog=epilog)
     parser.add_argument(
-        "command", type=str, choices=command.discover(), help="The context to enter"
+        "command", type=str, choices=commands, help="The context to enter"
     )
     parser.add_argument(
         "args", nargs="*", type=str, help="Args to pass to the subcommand"
