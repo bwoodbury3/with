@@ -38,7 +38,7 @@ To install `with`, follow these simple steps:
 2. Install `with` using `pip`:
 
    ```bash
-   pip install -e with
+   python3 -m pip install -e with
    ```
 
 Now, you should have the `with` command available in your shell.
