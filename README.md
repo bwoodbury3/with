@@ -1,19 +1,20 @@
-# `with` - A Context Manager for Temporary Shell Sessions
+# `with` - A Context Manager for Bash
 
 `with` is a powerful command-line tool that allows you to create and manage temporary shell sessions in specific contexts. It provides an intuitive way to work within temporary environments or execute commands within those contexts.
 
 ```bash
 $ with tmp
->> Starting context: /tmp/tmp-e7668361
-$ curl https://raw.githubusercontent.com/bwoodbury3/with/main/with.sh > with.sh
-  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
-                                 Dload  Upload   Total   Spent    Left  Speed
-100   579  100   579    0     0   9512      0 --:--:-- --:--:-- --:--:-- 10924
-$ exit
+>> Starting context: /tmp/tmp-e22766a6
+bash-3.2$ touch a b c
+bash-3.2$ ls
+a	b	c
+bash-3.2$ exit
 exit
->> Deleting context: /tmp/tmp-e7668361
-/tmp/tmp-e7668361/with.sh
-/tmp/tmp-e7668361
+>> Deleting context: /tmp/tmp-e22766a6
+/tmp/tmp-e22766a6/a
+/tmp/tmp-e22766a6/c
+/tmp/tmp-e22766a6/b
+/tmp/tmp-e22766a6
 ```
 
 ## Table of Contents

@@ -24,6 +24,8 @@ def run(with_command: str, cmd_args: List[str], executable: str) -> int:
     """
     withfile = command.cmd_to_filename(with_command)
     context = hex(random.randint(0, 2**32)).lstrip("0x")
+    if not cmd_args:
+        cmd_args = []
     cmd_args_arg = f"\"{' '.join(cmd_args)}\""
 
     # Run!
