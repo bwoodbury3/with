@@ -24,11 +24,11 @@ def run(with_command: str, cmd_args: List[str], executable: str) -> int:
     """
     withfile = command.cmd_to_filename(with_command)
     context = hex(random.randint(0, 2**32)).lstrip("0x")
-    cmd_args = " ".join(cmd_args)
+    cmd_args_arg = f"\"{' '.join(cmd_args)}\""
 
     # Run!
     out = subprocess.run(
-        ["/bin/bash", command.WITH_SCRIPT, withfile, context, cmd_args, executable]
+        ["/bin/bash", command.WITH_SCRIPT, withfile, context, cmd_args_arg, executable]
     )
     return out.returncode
 
@@ -42,12 +42,11 @@ def main():
         "command", type=str, choices=commands, help="The context to enter"
     )
     parser.add_argument(
-        "args", nargs="*", type=str, help="Args to pass to the subcommand"
+        "--args", "-a", nargs="*", type=str, help="Args to pass to the subcommand"
     )
     parser.add_argument(
         "--executable",
         "-e",
-        nargs="?",
         type=str,
         default="",
         help="Full executable to run in this context. If unspecified, will drop the user into an interactive shell",
