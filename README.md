@@ -2,6 +2,7 @@
 
 `with` is a powerful command-line tool that allows you to create and manage temporary shell sessions in specific contexts. It provides an intuitive way to work within temporary environments or execute commands within those contexts.
 
+Play around in a temporary context and clean it up when you're done:
 ```bash
 $ with tmp
 >> Starting context: /tmp/tmp-e22766a6
@@ -15,6 +16,23 @@ exit
 /tmp/tmp-e22766a6/c
 /tmp/tmp-e22766a6/b
 /tmp/tmp-e22766a6
+```
+
+Make ephemeral changes to a directory and restore the original copy when you're done:
+```bash
+/tmp/test $ touch file.txt
+/tmp/test $ with overlay
+>> OverlayFS is active. Experiment with this directory.
+/tmp/overlay-782f3810-mount $ ls
+file.txt
+/tmp/overlay-782f3810-mount $ touch file2.txt
+/tmp/overlay-782f3810-mount $ ls
+file2.txt  file.txt
+/tmp/overlay-782f3810-mount $ exit
+exit
+>> Cleaning temporary filesystem
+/tmp/test $ ls
+file.txt
 ```
 
 ## Table of Contents
