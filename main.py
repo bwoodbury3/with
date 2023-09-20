@@ -3,12 +3,52 @@ Main entrypoint.
 """
 
 import argparse
+import os
 import random
 import subprocess
 import sys
 from typing import List
 
 import command
+
+
+WITH_DEPTH = "WITH_DEPTH"
+"""
+The environment variable holding the with depth.
+"""
+
+
+def increment_depth() -> int:
+    """
+    Increment the depth environment variable. Do our best to clean up a bad
+    state here, but there's only so much we can do.
+
+    Returns: The context depth.
+    """
+    depth_var = os.environ.get(WITH_DEPTH, "0")
+    if not depth_var.isdigit():
+        depth_var = "0"
+
+    new_depth = int(depth_var) + 1
+    os.environ[WITH_DEPTH] = str(new_depth)
+    return new_depth
+
+
+def decrement_depth() -> int:
+    """
+    Decrement the depth environment variable. Do our best to clean up a bad
+    state here, but there's only so much we can do.
+
+    Returns: The context depth.
+    """
+    # Assume 1 if it's not present so that we can decrement.
+    depth_var = os.environ.get(WITH_DEPTH, "1")
+    if not depth_var.isdigit():
+        depth_var = "1"
+
+    new_depth = max(int(depth_var) - 1, 0)
+    os.environ[WITH_DEPTH] = str(new_depth)
+    return new_depth
 
 
 def run(with_command: str, cmd_args: List[str], executable: str) -> int:
@@ -28,10 +68,17 @@ def run(with_command: str, cmd_args: List[str], executable: str) -> int:
         cmd_args = []
     cmd_args_arg = f"{' '.join(cmd_args)}"
 
+    depth = increment_depth()
+    print(f">> Context depth: {depth}")
+
     # Run!
     out = subprocess.run(
         ["/bin/bash", command.WITH_SCRIPT, withfile, context, cmd_args_arg, executable]
     )
+
+    depth = decrement_depth()
+    print(f">> Context depth: {depth}")
+
     return out.returncode
 
 
